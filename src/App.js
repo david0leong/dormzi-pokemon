@@ -10,18 +10,14 @@ function App() {
     <div>
       <Header />
 
-      {/* A <Switch> looks through its children <Route>s and
-      renders the first one that matches the current URL. */}
       <Switch>
-        <Route strict path="/">
-          <Redirect to="/pokemon" />
-        </Route>
+        <Redirect exact from="/" to="/pokemon" />
 
-        <Route strict path="/pokemon">
+        <Route exact path="/pokemon">
           <PokemonList />
         </Route>
 
-        <Route strict path="/pokemon/:id">
+        <Route exact path="/pokemon/:id">
           <Pokemon />
         </Route>
       </Switch>

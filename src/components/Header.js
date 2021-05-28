@@ -1,13 +1,13 @@
 import React from 'react'
 import Navbar from 'react-bootstrap/Navbar'
-import Button from 'react-bootstrap/Button'
+import { Link } from 'react-router-dom'
 
 const Header = () => {
   return (
     <Navbar bg="light" expand="lg">
-      <Navbar.Brand href="#home">Dormzi Pokemon</Navbar.Brand>
-
-      <Button>View Carousel</Button>
+      <Navbar.Brand as={Link} to="/">
+        Dormzi Pokemon
+      </Navbar.Brand>
     </Navbar>
   )
 }
