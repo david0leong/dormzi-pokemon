@@ -20,7 +20,11 @@ const PokemonTable = ({ pokemons }) => {
 
       <tbody>
         {pokemons.map(pokemon => (
-          <tr key={pokemon.id} onClick={() => handleClick(pokemon)}>
+          <tr
+            key={pokemon.id}
+            style={{ cursor: 'pointer' }}
+            onClick={() => handleClick(pokemon)}
+          >
             <td>{pokemon.id}</td>
             <td>{pokemon.name}</td>
           </tr>
