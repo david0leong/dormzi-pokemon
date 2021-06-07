@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import React, { useState, useEffect, useCallback } from 'react'
+import { useHistory, useParams } from 'react-router-dom'
 import Image from 'react-bootstrap/Image'
 
 import { fetchPokemon } from '../utils/api'
@@ -9,9 +9,27 @@ import NotFound from './NotFound'
 
 const Pokemon = () => {
   const { id } = useParams()
+  const history = useHistory()
 
   const [loading, setLoading] = useState(false)
   const [pokemon, setPokemon] = useState(null)
+
+  const handleKeyDown = useCallback(
+    e => {
+      const intId = parseInt(id)
+
+      // Left key
+      if (e.keyCode === 37 && intId > 0) {
+        history.push(`/pokemon/${intId - 1}`)
+      }
+
+      // Right key
+      if (e.keyCode === 39) {
+        history.push(`/pokemon/${intId + 1}`)
+      }
+    },
+    [id] // eslint-disable-line
+  )
 
   useEffect(() => {
     // Fetch pokemon
@@ -29,6 +47,14 @@ const Pokemon = () => {
 
     fetchData()
   }, [id])
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [handleKeyDown])
 
   if (loading) {
     return <Loading />
@@ -49,47 +75,49 @@ const Pokemon = () => {
       </div>
 
       <div className="flex-grow-1">
-        <p>
+        <div className="mb-2">
           <b>English Name:</b> {pokemon.ename}
-        </p>
+        </div>
 
-        <p>
+        <div className="mb-2">
           <b>Chinese Name:</b> {pokemon.cname}
-        </p>
+        </div>
 
-        <p>
+        <div className="mb-2">
           <b>Japanese Name:</b> {pokemon.jname}
-        </p>
+        </div>
 
-        <p>
+        <div className="mb-2">
           <b>Image ID:</b> {pokemon.id}
-        </p>
+        </div>
 
-        <p>
-          <b>Skills:</b>
+        <div className="mb-2">
+          <div className="mb-1">
+            <b>Skills:</b>
+          </div>
 
-          <br />
+          <div className="ml-3">
+            <div className="mb-1">
+              <b>Egg:</b> {pokemon.skills.egg?.join(', ')}
+            </div>
 
-          <p className="ml-3 mb-1">
-            <b>Egg:</b> {pokemon.skills.egg.join(', ')}
-          </p>
+            <div className="mb-1">
+              <b>Level Up:</b> {pokemon.skills.level_up?.join(', ')}
+            </div>
 
-          <p className="ml-3 mb-1">
-            <b>Level Up:</b> {pokemon.skills.level_up.join(', ')}
-          </p>
+            <div className="mb-1">
+              <b>TM:</b> {pokemon.skills.tm?.join(', ')}
+            </div>
 
-          <p className="ml-3 mb-1">
-            <b>TM:</b> {pokemon.skills.tm.join(', ')}
-          </p>
+            <div className="mb-1">
+              <b>Transfer:</b> {pokemon.skills.transfer?.join(', ')}
+            </div>
 
-          <p className="ml-3 mb-1">
-            <b>Transfer:</b> {pokemon.skills.transfer.join(', ')}
-          </p>
-
-          <p className="ml-3 mb-1">
-            <b>Tutor:</b> {pokemon.skills.tutor.join(', ')}
-          </p>
-        </p>
+            <div className="mb-1">
+              <b>Tutor:</b> {pokemon.skills.tutor?.join(', ')}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )
