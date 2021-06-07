@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import Button from 'react-bootstrap/Button'
+import Dropdown from 'react-bootstrap/Dropdown'
 import slice from 'lodash/slice'
 
 import { fetchPokemons } from '../utils/api'
@@ -15,7 +16,7 @@ const PokemonList = () => {
   const [tableView, setTableView] = useState(true)
   const [pokemons, setPokemons] = useState([])
   const [visiblePokemons, setVisiblePokemons] = useState([])
-  const [showSlideshowModal, setShowSlideshowModal] = useState(false)
+  const [slide, setSlide] = useState(false)
 
   const handlePaginationChange = useCallback(
     ({ page, pageSize }) => {
@@ -29,10 +30,6 @@ const PokemonList = () => {
   const handleToggleView = useCallback(() => {
     setTableView(!tableView)
   }, [tableView])
-
-  const handleToggleSlideshowModal = useCallback(() => {
-    setShowSlideshowModal(!showSlideshowModal)
-  }, [showSlideshowModal])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -57,18 +54,31 @@ const PokemonList = () => {
   return (
     <>
       <div className="p-4">
-        <div className="mb-4">
+        <div className="d-flex mb-4">
           <Button variant="info" onClick={handleToggleView}>
             {tableView ? 'View in tiles' : 'View in table'}
           </Button>
 
-          <Button
-            variant="success"
-            className="ml-2"
-            onClick={handleToggleSlideshowModal}
-          >
-            View Slideshow
-          </Button>
+          <Dropdown className="ml-2">
+            <Dropdown.Toggle variant="success" id="dropdown-basic">
+              Slideshow
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu>
+              <Dropdown.Item onClick={() => setSlide(1)}>
+                Slide by 1
+              </Dropdown.Item>
+              <Dropdown.Item onClick={() => setSlide(2)}>
+                Slide by 2
+              </Dropdown.Item>
+              <Dropdown.Item onClick={() => setSlide(3)}>
+                Slide by 3
+              </Dropdown.Item>
+              <Dropdown.Item onClick={() => setSlide(4)}>
+                Slide by 4
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
         </div>
 
         <PokemonPagination
@@ -86,10 +96,10 @@ const PokemonList = () => {
       </div>
 
       <PokemonSlideshowModal
-        show={showSlideshowModal}
-        slide={4}
+        show={slide > 0}
+        slide={slide}
         pokemons={pokemons}
-        onClose={handleToggleSlideshowModal}
+        onClose={() => setSlide(0)}
       />
     </>
   )
