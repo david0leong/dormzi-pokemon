@@ -1,0 +1,15 @@
+.pokemon-slideshow-modal {
+  max-width: 300px;
+
+  &.show-2 {
+    max-width: calc(300px * 2);
+  }
+
+  &.show-3 {
+    max-width: calc(300px * 3);
+  }
+
+  &.show-3 {
+    max-width: calc(300px * 4);
+  }
+}

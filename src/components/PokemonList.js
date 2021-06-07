@@ -8,12 +8,14 @@ import Loading from './Loading'
 import PokemonTable from './PokemonTable'
 import PokemonPagination from './PokemonPagination'
 import PokemonTiles from './PokemonTiles'
+import PokemonSlideshowModal from './PokemonSlideshowModal'
 
 const PokemonList = () => {
   const [loading, setLoading] = useState(false)
   const [tableView, setTableView] = useState(true)
   const [pokemons, setPokemons] = useState([])
   const [visiblePokemons, setVisiblePokemons] = useState([])
+  const [showSlideshowModal, setShowSlideshowModal] = useState(false)
 
   const handlePaginationChange = useCallback(
     ({ page, pageSize }) => {
@@ -27,6 +29,10 @@ const PokemonList = () => {
   const handleToggleView = useCallback(() => {
     setTableView(!tableView)
   }, [tableView])
+
+  const handleToggleSlideshowModal = useCallback(() => {
+    setShowSlideshowModal(!showSlideshowModal)
+  }, [showSlideshowModal])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -49,26 +55,43 @@ const PokemonList = () => {
   }
 
   return (
-    <div className="p-4">
-      <PokemonPagination
-        initialPage={1}
-        initialPageSize={10}
-        total={pokemons.length}
-        onChange={handlePaginationChange}
-      />
+    <>
+      <div className="p-4">
+        <div className="mb-4">
+          <Button variant="info" onClick={handleToggleView}>
+            {tableView ? 'View in tiles' : 'View in table'}
+          </Button>
 
-      <div className="mb-2">
-        <Button variant="info" onClick={handleToggleView}>
-          {tableView ? 'View in tiles' : 'View in table'}
-        </Button>
+          <Button
+            variant="success"
+            className="ml-2"
+            onClick={handleToggleSlideshowModal}
+          >
+            View Slideshow
+          </Button>
+        </div>
+
+        <PokemonPagination
+          initialPage={1}
+          initialPageSize={10}
+          total={pokemons.length}
+          onChange={handlePaginationChange}
+        />
+
+        {tableView ? (
+          <PokemonTable pokemons={visiblePokemons} />
+        ) : (
+          <PokemonTiles pokemons={visiblePokemons} />
+        )}
       </div>
 
-      {tableView ? (
-        <PokemonTable pokemons={visiblePokemons} />
-      ) : (
-        <PokemonTiles pokemons={visiblePokemons} />
-      )}
-    </div>
+      <PokemonSlideshowModal
+        show={showSlideshowModal}
+        slide={3}
+        pokemons={pokemons}
+        onClose={handleToggleSlideshowModal}
+      />
+    </>
   )
 }
 

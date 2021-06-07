@@ -76,7 +76,7 @@ const Pokemon = () => {
   return (
     <>
       <div className="p-4 d-flex">
-        <div className="mr-3">
+        <div className="mr-3 p-2">
           <Image
             src={pokemon.picture}
             rounded
