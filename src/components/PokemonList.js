@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react'
+import Button from 'react-bootstrap/Button'
 import slice from 'lodash/slice'
 
 import { fetchPokemons } from '../utils/api'
@@ -6,9 +7,11 @@ import { fetchPokemons } from '../utils/api'
 import Loading from './Loading'
 import PokemonTable from './PokemonTable'
 import PokemonPagination from './PokemonPagination'
+import PokemonTiles from './PokemonTiles'
 
 const PokemonList = () => {
   const [loading, setLoading] = useState(false)
+  const [tableView, setTableView] = useState(true)
   const [pokemons, setPokemons] = useState([])
   const [visiblePokemons, setVisiblePokemons] = useState([])
 
@@ -20,6 +23,10 @@ const PokemonList = () => {
     },
     [pokemons, setVisiblePokemons]
   )
+
+  const handleToggleView = useCallback(() => {
+    setTableView(!tableView)
+  }, [tableView])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -50,7 +57,17 @@ const PokemonList = () => {
         onChange={handlePaginationChange}
       />
 
-      <PokemonTable pokemons={visiblePokemons} />
+      <div className="mb-2">
+        <Button variant="info" onClick={handleToggleView}>
+          {tableView ? 'View in tiles' : 'View in table'}
+        </Button>
+      </div>
+
+      {tableView ? (
+        <PokemonTable pokemons={visiblePokemons} />
+      ) : (
+        <PokemonTiles pokemons={visiblePokemons} />
+      )}
     </div>
   )
 }

@@ -1,0 +1,15 @@
+.pokemon-tiles-wrapper {
+  margin: -0.5rem;
+
+  .pokemon-tile {
+    width: 200px;
+    height: 200px;
+    border: 1px solid;
+    cursor: pointer;
+    margin: 0.5rem;
+
+    &:hover {
+      filter: grayscale(0.7);
+    }
+  }
+}
