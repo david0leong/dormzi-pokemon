@@ -1,7 +1,9 @@
 import axios from 'axios'
 
-export const fetchPokemons = () =>
-  axios.get('http://pokemon.test.dormzi.com/pokemon')
+const axiosInstance = axios.create({
+  baseURL: 'http://pokemon.test.dormzi.com/',
+})
 
-export const fetchPokemon = id =>
-  axios.get(`http://pokemon.test.dormzi.com/pokemon/${id}`)
+export const fetchPokemons = () => axiosInstance.get('pokemon')
+
+export const fetchPokemon = id => axiosInstance.get(`pokemon/${id}`)
