@@ -20,6 +20,7 @@ const Carousel = ({ slide = 1, children }) => {
 
   // Set the length to match current children from props
   useEffect(() => {
+    setCurrentIndex(0)
     setLength(children.length)
   }, [children])
 

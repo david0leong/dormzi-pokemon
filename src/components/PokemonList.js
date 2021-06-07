@@ -87,7 +87,7 @@ const PokemonList = () => {
 
       <PokemonSlideshowModal
         show={showSlideshowModal}
-        slide={3}
+        slide={4}
         pokemons={pokemons}
         onClose={handleToggleSlideshowModal}
       />
